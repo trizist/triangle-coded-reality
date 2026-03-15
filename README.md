@@ -232,5 +232,11 @@ git push origin feat/your-idea
   "access_right": "open"
 }
 ```
+## 📜 Licensing
+
+| Component | License |
+|-----------|---------|
+| Manuscript, figures, documentation | [CC BY 4.0](./LICENSE) |
+| Python scripts, analysis code | [MIT](./LICENSE_CODE.md) |
 
 *Last updated: March 16, 2026 | Repository version: 1.01 | DOI: 10.5281/zenodo.19038531* 🌀🔺
