@@ -6,7 +6,8 @@
 [![Status: Active Research](https://img.shields.io/badge/status-active_research-green)](./README.md)
 
 **Published**: March 15, 2026 | **Version**: 1.01 | **DOI**: [10.5281/zenodo.19038531](https://doi.org/10.5281/zenodo.19038531)  
-**License**: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | **Status**: Active Research
+**License**: [CC BY 4.0](./LICENSE) (Content) | [MIT](./LICENSE_CODE.md) (Code)  
+**Author**: [Umair Abbas Siddiquie](https://orcid.org/0009-0008-3968-2252) (Tune Talk Academy, NAIEP)
 
 ---
 
@@ -41,13 +42,12 @@ This repository presents a geometric working model wherein **64-state registers*
 | File | Size | Description |
 |------|------|-------------|
 | `manuscript/The-64_Theory_..._Nature.PDF` | 687.3 kB | Full journal-article manuscript (Zenodo-published) |
-| `figures/Central_Node_Conscious_Mode-Selector.png` | 5.4 MB | Diagram: Consciousness as mode-selector over standing-wave configurations |
+| `figures/64-Register_Infographic_Domains.png` | ~5.0 MB | **New**: Cross-domain pattern visualization (Biology, Computing, I-Ching, Chess) |
+| `figures/The_64-Register_Equilateral_Energy.png` | 6.5 MB | Integrated schematic of the full 3-layer model |
 | `figures/Layer-1_Vacuum_Scaffold_Outer_Ring.png` | 6.3 MB | 64-tetrahedron vacuum register @ Planck scale |
 | `figures/Layer-2_Equilateral-Energy_Tessellation.png` | 5.3 MB | Equilateral Planck triangles as energy quanta (Tetryonics) |
 | `figures/Layer-3_Right-Triangle_Metric_Overlay.png` | 6.0 MB | Right-triangle code as rendering engine for fractal selection |
-| `figures/Peripheral_Annotations.png` | 6.2 MB | Cross-domain 64-pattern mirrors (codons, bits, hexagrams, etc.) |
-| `figures/The_64-Register_Equilateral_Energy.png` | 6.5 MB | Integrated schematic of the full 3-layer model |
-| `scripts/branching_angle_analysis.py` | — | Prototype pipeline for angle-extraction hypothesis testing |
+| `figures/Central_Node_Conscious_Mode-Selector.png` | 5.4 MB | Diagram: Consciousness as mode-selector over standing-wave configurations || `scripts/branching_angle_analysis.py` | — | Prototype pipeline for angle-extraction hypothesis testing |
 | `requirements.txt` | — | Python dependencies for analysis scripts |
 
 *All figures: MD5 checksums available in Zenodo record for integrity verification.*
@@ -56,7 +56,7 @@ This repository presents a geometric working model wherein **64-state registers*
 
 ## 🔬 Testing the Hypothesis
 
-### Proposed Research Pipeline
+### Proposed Research Pipeline (Manuscript Section 10)
 ```python
 # scripts/branching_angle_analysis.py
 # Tests whether natural branching systems converge on right-triangle angular ratios
@@ -66,6 +66,7 @@ This repository presents a geometric working model wherein **64-state registers*
    - River networks (HydroSHEDS)
    - Lightning mapping arrays (ENGLN)
    - Vascular imaging (public medical datasets)
+   - Galactic spiral arm tracings
 
 2. Extract bifurcation angles via skeletonization + vector analysis
 
@@ -83,6 +84,39 @@ This repository presents a geometric working model wherein **64-state registers*
 ```bash
 # Clone and install dependencies
 git clone https://github.com/trizist/triangle-coded-reality.git
+cd triangle-coded-reality
+pip install -r requirements.txt
+
+# Run prototype analysis (example dataset required)
+python scripts/branching_angle_analysis.py --input data/example_branches.csv
+```
+
+*See `scripts/README.md` for full CLI options and dataset formatting guidelines.*
+
+---
+
+## 🧭 Conceptual Framework
+```mermaid
+graph TD
+    A[64-State Register<br/>Minimal complete alphabet] --> B[Equilateral Triangles<br/>Energy quanta / Tetryonics]
+    A --> C[Right-Triangle Code<br/>Metric renderer / Grant]
+    A --> D[Standing-Wave Modes<br/>Dynamics / Tesla-Schumann]
+    B & C & D --> E[Consciousness as Mode-Selector]
+    E --> F[Observable Reality / Timeline]
+    
+    style A fill:#0a2463,color:white,stroke:#fff,stroke-width:2px
+    style B fill:#00a896,color:white
+    style C fill:#ff9e64,color:#000
+    style D fill:#ffd166,color:#000
+    style E fill:#9b5de5,color:white
+    style F fill:#f15bb5,color:white
+```
+
+*If Mermaid rendering is unavailable, see `docs/CONCEPTUAL_FRAMEWORK.md` for an ASCII/text fallback.*
+
+### Core Principles (Manuscript Section 12)*If Mermaid rendering is unavailable, see `docs/CONCEPTUAL_FRAMEWORK.md` for an ASCII/text fallback.*
+
+### Core Principles (Manuscript Section 12)git clone https://github.com/trizist/triangle-coded-reality.git
 cd triangle-coded-reality
 pip install -r requirements.txt
 
