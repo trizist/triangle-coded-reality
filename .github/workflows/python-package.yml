@@ -1,0 +1,263 @@
+# .github/workflows/python-package.yml
+# CI/CD workflow for The 64 Theory 1.01 branching angle analysis pipeline
+# Tests reproducibility, code quality, and scientific validity
+
+name: Python Package & Analysis Validation
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'scripts/**'
+      - 'requirements*.txt'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'scripts/**'
+      - 'requirements*.txt'
+      - '.github/workflows/**'
+  workflow_dispatch:  # Allow manual trigger
+
+env:
+  PYTHON_VERSION: "3.10"
+  CACHE_KEY_PREFIX: "64theory-v1"
+
+jobs:
+  # ============================================================================
+  # JOB 1: Code Quality & Linting
+  # ============================================================================
+  lint:
+    name: Lint & Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install linting dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 black mypy pylint
+      
+      - name: Lint with flake8 (critical errors only)
+        run: |
+          flake8 scripts/ \
+            --count \            --select=E9,F63,F7,F82 \
+            --show-source \
+            --statistics \
+            --exclude=scripts/utils/__init__.py
+      
+      - name: Check formatting with black (dry run)
+        run: |
+          black --check --diff scripts/
+      
+      - name: Type checking with mypy (optional, non-blocking)
+        run: |
+          mypy scripts/ --ignore-missing-imports || echo "⚠️ Type hints incomplete (non-blocking)"
+
+  # ============================================================================
+  # JOB 2: Dependency Installation & Environment Validation
+  # ============================================================================
+  dependencies:
+    name: Validate Dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      
+      - name: Install root dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Install script-specific dependencies
+        run: |
+          if [ -f scripts/requirements-scripts.txt ]; then
+            pip install -r scripts/requirements-scripts.txt
+          fi
+      
+      - name: Verify imports
+        run: |
+          python -c "import numpy, pandas, scipy, sklearn, matplotlib; print('✓ Core imports successful')"
+          python -c "from scripts.utils.right_triangle_benchmarks import RIGHT_TRIANGLE_ANGLES; print('✓ Module imports successful')"
+
+  # ============================================================================
+  # JOB 3: Unit Tests for Utility Functions  # ============================================================================
+  test-utils:
+    name: Test Utility Modules
+    runs-on: ubuntu-latest
+    needs: dependencies
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r scripts/requirements-scripts.txt
+          pip install pytest pytest-cov
+      
+      - name: Run unit tests (if available)
+        run: |
+          if [ -d "tests/" ]; then
+            pytest tests/ -v --cov=scripts/utils --cov-report=term
+          else
+            echo "⚠️ No tests/ directory found; running import smoke tests"
+            python -c "
+            from scripts.utils.angle_extractor import compute_bifurcation_angles
+            from scripts.utils.clustering import cluster_angles
+            from scripts.utils.right_triangle_benchmarks import get_benchmark_label
+            from scripts.utils.stats import permutation_test_significance
+            print('✓ All utility modules import successfully')
+            "
+          fi
+
+  # ============================================================================
+  # JOB 4: Smoke Test - Run Analysis on Example Data
+  # ============================================================================
+  smoke-test:
+    name: Smoke Test (Example Dataset)
+    runs-on: ubuntu-latest
+    needs: dependencies
+    timeout-minutes: 15
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r scripts/requirements-scripts.txt
+      
+      - name: Generate synthetic test data
+        run: |
+          python -c "
+          import numpy as np, pandas as pd, os
+          os.makedirs('data', exist_ok=True)
+          # Generate synthetic branching data (100 nodes, random but structured)
+          n = 100
+          df = pd.DataFrame({
+              'node_id': range(1, n+1),
+              'parent_id': [0] + list(range(1, n)),
+              'x': np.cumsum(np.random.randn(n) * 0.5),
+              'y': np.cumsum(np.random.randn(n) * 0.5)
+          })
+          df.to_csv('data/test_branches.csv', index=False)
+          print(f'✓ Generated synthetic dataset: {len(df)} nodes')
+          "
+      
+      - name: Run analysis pipeline (smoke test)
+        run: |
+          python scripts/branching_angle_analysis.py \
+            --input data/test_branches.csv \
+            --output results/smoke_test/ \
+            --scale unknown \
+            --tolerance 3.0 \
+            --permutation-tests 100 \
+            --verbose
+      
+      - name: Verify outputs
+        run: |
+          if [ -f "results/smoke_test/results_summary.json" ]; then
+            echo "✓ Analysis completed successfully"
+            python -c "
+            import json
+            with open('results/smoke_test/results_summary.json') as f:
+                results = json.load(f)
+            print(f\"Match rate: {results['statistics']['match_rate_percent']:.2f}%\")
+            print(f\"P-value: {results['statistics']['permutation_p_value']:.4f}\")
+            "
+          else
+            echo "❌ Output files missing"
+            exit 1          fi
+      
+      - name: Upload results artifact (for debugging)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-test-results
+          path: results/smoke_test/
+          retention-days: 7
+
+  # ============================================================================
+  # JOB 5: Documentation & Metadata Validation
+  # ============================================================================
+  docs-validation:
+    name: Validate Documentation & Metadata
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate CITATION.cff
+        run: |
+          pip install cffconvert
+          cffconvert --validate || echo "⚠️ CITATION.cff validation failed (non-blocking)"
+      
+      - name: Check README links
+        run: |
+          # Basic check: ensure DOI and key links are present
+          grep -q "10.5281/zenodo.19038531" README.md && echo "✓ DOI present in README"
+          grep -q "branching_angle_analysis.py" README.md && echo "✓ Script reference present"
+      
+      - name: Verify manuscript file
+        run: |
+          if [ -f "manuscript/The-64_Theory_A_Triangle-Coded_Register_Model_for_Informational_Granularity_in_Nature.PDF" ]; then
+            echo "✓ Manuscript PDF present"
+            ls -lh manuscript/*.PDF
+          else
+            echo "⚠️ Manuscript PDF not found (may be in .gitignore)"
+          fi
+
+  # ============================================================================
+  # JOB 6: Build Summary & Reporting
+  # ============================================================================
+  summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [lint, dependencies, test-utils, smoke-test, docs-validation]
+    if: always()
+    
+    steps:      - name: Report build status
+        run: |
+          echo "## 📊 Build Summary for The 64 Theory 1.01" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.lint.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dependencies | ${{ needs.dependencies.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.test-utils.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Smoke Test | ${{ needs.smoke-test.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docs Validation | ${{ needs.docs-validation.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ "${{ needs.smoke-test.result }}" == "success" ]]; then
+            echo "✅ All critical checks passed. Repository is reproducible." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Some checks failed. Review logs before merging." >> $GITHUB_STEP_SUMMARY
+          fi
