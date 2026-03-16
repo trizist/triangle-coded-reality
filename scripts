@@ -1,0 +1,15 @@
+scripts/
+├── branching_angle_analysis.py    # Main analysis pipeline
+├── utils/
+│   ├── data_loader.py             # Dataset import utilities
+│   ├── angle_extractor.py         # Bifurcation angle computation
+│   ├── clustering.py              # DBSCAN/k-means clustering
+│   ├── right_triangle_benchmarks.py # Reference angle library
+│   └── stats.py                   # Permutation testing & validation
+├── config/
+│   └── default_params.yaml        # Configurable parameters
+├── examples/
+│   ├── example_neuron.swc         # Sample neuronal reconstruction
+│   └── example_river.geojson      # Sample river network
+├── requirements-scripts.txt       # Script-specific dependencies
+└── README.md                      # Usage documentation
