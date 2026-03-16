@@ -1,0 +1,34 @@
+# The 64 Theory 1.01 - Python Dependencies
+# For branching angle analysis and statistical testing
+# Python 3.10+ recommended
+
+# Core numerical computing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Machine learning / clustering
+scikit-learn>=1.3.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Geographic / spatial analysis (for river networks, lightning maps)
+geopandas>=0.14.0
+shapely>=2.0.0
+
+# Image processing (for skeletonization of branching structures)
+scikit-image>=0.21.0
+opencv-python>=4.8.0
+
+# Data validation
+pydantic>=2.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Documentation / notebooks
+jupyter>=1.0.0
+notebook>=7.0.0
