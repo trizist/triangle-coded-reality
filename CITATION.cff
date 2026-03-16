@@ -1,0 +1,108 @@
+cff-version: 1.2.0
+message: "If you use this software or manuscript, please cite it as below."
+
+title: "The 64 Theory 1.01: A Triangle-Coded Register Model for Informational Granularity in Nature"
+
+abstract: |
+  Recurrent appearances of the number 64 across biological coding (64 codons), 
+  embryonic development (64-cell blastocyst), digital computation (64-bit architectures), 
+  and symbolic systems (64 I-Ching hexagrams) suggest a possible informational granularity 
+  in nature. We propose a geometric working model wherein 64-state registers—tessellations 
+  of equilateral Planck-energy triangles (Tetryonics) resolved by universal right-triangle 
+  metric codes—serve as minimal units for encoding complete alphabets of states across domains. 
+  This framework is mathematically formalized through a Scale-Free Lagrangian and Pythagorean 
+  Generator that maps atomic structure to galactic morphology with a Pearson correlation of −0.936. 
+  Standing-wave modes over these registers (Tesla/Schumann resonance framework) provide a 
+  dynamical interpretation for timeline shifts and subjective anomalies. We outline a falsifiable 
+  research program: statistical analysis of bifurcation angles in natural branching systems 
+  (vascular, fluvial, neuronal) to test for convergence toward right-triangle angular ratios. 
+  This hypothesis bridges speculative geometry and empirical pattern analysis, inviting 
+  interdisciplinary collaboration without claiming to replace established physics.
+
+authors:
+  - family-names: "Siddiquie"
+    given-names: "Umair Abbas"
+    name-particle: ""
+    name-suffix: ""
+    orcid: "https://orcid.org/0009-0008-3968-2252"
+    email: "umair.siddiquie@gmail.com"
+    affiliation: "Tune Talk Academy; National Artificial Intelligence Education of Pakistan (NAIEP)"
+    country: "PK"
+
+version: "1.01"
+
+doi: "10.5281/zenodo.19038531"
+
+date-released: 2026-03-16
+
+date-created: 2026-03-15
+
+url: "https://github.com/trizist/triangle-coded-reality"
+
+repository: "https://github.com/trizist/triangle-coded-reality"
+
+repository-code: "https://github.com/trizist/triangle-coded-reality"
+
+license: "CC-BY-4.0"
+
+keywords:
+  - "64-register hypothesis"
+  - "discrete spacetime"  - "fractal geometry"
+  - "right-triangle code"
+  - "equilateral energy"
+  - "standing waves"
+  - "Pythagorean Generator"
+  - "Scale-Free Lagrangian"
+  - "quantum geometry"
+  - "informational granularity"
+  - "Tokunaga statistics"
+  - "branching angle analysis"
+  - "timeline shifts"
+  - "Mandela effect"
+  - "Tetryonics"
+  - "Planck scale"
+  - "geometric physics"
+
+type: software
+
+references:
+  - type: article
+    title: "An Introduction to Tetryonic Theory"
+    authors:
+      - family-names: "Abraham"
+        given-names: "Kelvin"
+    year: 2014
+    url: "https://www.ijsrp.org/research-paper-0514/ijsrp-p2944.pdf"
+  
+  - type: article
+    title: "Galaxies as Macro-Elements: Spectral Line Correspondences via Pythagorean Cascade Architecture"
+    authors:
+      - family-names: "Grant"
+        given-names: "Robert Edward"
+    year: 2026
+    publisher: "Institute of Unified Mathematics"
+
+  - type: webpage
+    title: "Quantum vacuum dynamics"
+    authors:
+      - family-names: "Haramein"
+        given-names: "Nassim"
+    url: "https://ma-vie-quantique.com/dynamics-of-the-universe/"
+
+  - type: webpage
+    title: "One is the Only Constant"
+    authors:
+      - family-names: "Grant"
+        given-names: "Robert Edward"
+    url: "https://robertedwardgrant.com/one-is-the-only-constant/"
+
+preferred-citation:  type: article
+  title: "The 64 Theory 1.01: A Triangle-Coded Register Model for Informational Granularity in Nature"
+  authors:
+    - family-names: "Siddiquie"
+      given-names: "Umair Abbas"
+      orcid: "https://orcid.org/0009-0008-3968-2252"
+  year: 2026
+  doi: "10.5281/zenodo.19038531"
+  url: "https://doi.org/10.5281/zenodo.19038531"
+  license: "CC-BY-4.0"
